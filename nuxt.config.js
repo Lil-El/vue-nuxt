@@ -2,7 +2,7 @@ module.exports = {
   env: {
     baseUrl: process.env.NODE_ENV === "production" ? "localhost" : "/"
   },
-  mode: "universal",
+  mode: "universal", //普通模式，seo
   /*
    ** Headers of the page
    */
@@ -23,15 +23,19 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#fff" },
+  loading: { color: "#f00" },
   /*
    ** Global CSS
+   配置全局css
    */
-  css: [],
+  css: ["assets/css/common.css"],
+  router: {
+    middleware: "router" //路由跳转都会执行router的中间件
+  },
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ["@/plugins/axios"],
   /*
    ** Nuxt.js dev-modules
    */
@@ -39,7 +43,7 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ["@nuxtjs/axios"],
   /*
    ** Build configuration
    */
