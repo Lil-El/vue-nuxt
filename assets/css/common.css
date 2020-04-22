@@ -1,6 +1,7 @@
 body {
   background-color: antiquewhite;
 }
+
 /* 
   <transition> "page"可以在config中配置（全局）
   如果只对某个页面添加，要在页面中添加transition属性

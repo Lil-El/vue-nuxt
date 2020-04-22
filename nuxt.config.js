@@ -28,14 +28,14 @@ module.exports = {
    ** Global CSS
    配置全局css
    */
-  css: ["assets/css/common.css"],
+  css: ["assets/css/common.css", "element-ui/lib/theme-chalk/index.css"],
   router: {
     middleware: "router" //路由跳转都会执行router的中间件
   },
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["@/plugins/axios"],
+  plugins: ["@/plugins/axios", "@/plugins/elementui"],
   /*
    ** Nuxt.js dev-modules
    */
