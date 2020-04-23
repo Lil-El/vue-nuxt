@@ -1,5 +1,7 @@
 <template>
-  <div class="container">Home :{{ name }}</div>
+  <div class="container">
+    Home :<span>{{ $store.state.username }}</span>
+  </div>
 </template>
 
 <script>
@@ -21,9 +23,9 @@ export default {
    */
   async asyncData(context) {
     //在服务端和客户端都执行
-    let res = await context.$axios.get("xxx");
+    // let res = await context.$axios.get("xxx");
     return {
-      name: res.name
+      // name: res.name
     };
   },
   mounted() {
