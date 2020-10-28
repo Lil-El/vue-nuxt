@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h1>{{ label }}</h1>
     Home :<span>{{ $store.state.username }}</span>
   </div>
 </template>
@@ -12,7 +13,7 @@ export default {
   head() {
     // 基于vue-meta，在页面级组件配置title等meta标签
     return {
-      title: "Nuxt App"
+      title: "Nuxt App",
     };
   },
   /**
@@ -26,6 +27,7 @@ export default {
     // let res = await context.$axios.get("xxx");
     return {
       // name: res.name
+      label: "Async Data",
     };
   },
   mounted() {
@@ -34,9 +36,9 @@ export default {
       this.$nuxt.$loading.start();
       setTimeout(() => {
         this.$nuxt.$loading.finish();
-      });
+      }, 1000);
     });
-  }
+  },
 };
 </script>
 

@@ -13,12 +13,12 @@ app.use(
     {
       key: "koa:sess",
       renew: false,
-      maxAge: 8600000
+      maxAge: 8600000,
     },
     app
   )
 );
-router.post("/denglu", async ctx => {
+router.post("/denglu", async (ctx) => {
   let { name } = ctx.request.body;
   ctx.session.username = name;
   ctx.body = { username: name };
@@ -36,7 +36,7 @@ async function start() {
 
   const {
     host = process.env.HOST || "127.0.0.1",
-    port = process.env.PORT || 3000
+    port = process.env.PORT || 3000,
   } = nuxt.options.server;
 
   await nuxt.ready();
@@ -46,7 +46,7 @@ async function start() {
     await builder.build();
   }
 
-  app.use(ctx => {
+  app.use((ctx) => {
     ctx.status = 200;
     ctx.respond = false; // Bypass Koa's built-in response handling
     ctx.req.ctx = ctx; // This might be useful later on, e.g. in nuxtServerInit or with nuxt-stash
@@ -57,7 +57,7 @@ async function start() {
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
-    badge: true
+    badge: true,
   });
 }
 
