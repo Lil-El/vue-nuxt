@@ -1,22 +1,75 @@
 <template>
-  <div class="container">
-    <h1>{{ label }}</h1>
+  <div id="map-wrap" style="height: 100vh">
     Home :<span>{{ $store.state.username }}</span>
+    <!-- <client-only>
+      <l-map
+        ref="map"
+        style="width: 100%"
+        :zoom="zoom"
+        :center="center"
+        :minZoom="minZoom"
+        :maxZoom="maxZoom"
+      >
+        <l-tile-layer :url="url"></l-tile-layer>
+
+        <template v-for="p of footprintList">
+          <l-marker
+            :lat-lng="[p.latitude, p.longitude]"
+            :icon="icon"
+            :key="p._id"
+          >
+            <l-popup>
+              <h3 v-text="p.place"></h3>
+              <p v-text="p.travelDate"></p>
+              <p v-text="p.description"></p>
+              <div class="photos" v-viewer>
+                <img
+                  v-for="url of p.photos"
+                  :src="url"
+                  :key="url"
+                  width="120px"
+                />
+              </div>
+            </l-popup>
+          </l-marker>
+        </template>
+      </l-map>
+    </client-only> -->
   </div>
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
-
+// import L from "leaflet";
+// import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
+import { post } from "@/shared/request";
 export default {
   middleware: "page", //跳转到该页面时，执行page中间件
+  // components: { LMap, LTileLayer, LMarker, LPopup },
   head() {
     // 基于vue-meta，在页面级组件配置title等meta标签
     return {
       title: "Nuxt App",
     };
   },
+  data() {
+    return {
+      url:
+        "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}",
+      zoom: 4,
+      minZoom: 3,
+      maxZoom: 16,
+      center: [35.63452, 109.132287],
+      listLoading: false,
+      footprintList: [],
+      // icon: L.icon({
+      //   iconUrl: "./images/foot.png",
+      //   iconSize: [28, 28],
+      //   iconAnchor: [10, 10],
+      // }),
+    };
+  },
   /**
+   * asyncData:
    * 在服务端执行  通过服务端获取数据
    * 在客户端执行 会把结果合并到data上
    * 只能在页面组件才能用；不能在layout、component中写
@@ -38,8 +91,47 @@ export default {
         this.$nuxt.$loading.finish();
       }, 1000);
     });
+    // code
+    this.getFootprints();
+    // 这里的代码
+    const query = this.$route.query;
+    // mounted 触发时，map还没渲染，所以延迟执行
+    setTimeout(() => {
+      console.log(this.$refs.map);
+      if (query.longitude && query.latitude) {
+        // 定位到此marker
+        const point = [query.latitude, query.longitude];
+        this.$refs.map.mapObject.setView(point, 8);
+        // this.$refs.map.mapObject.panTo([query.latitude, query.longitude])
+      }
+    }, 200);
+  },
+  methods: {
+    getFootprints() {
+      this.listLoading = true;
+      // 查询所有足迹点
+      post("/footprint/pageList", { page: 1, size: 9999 }).then((response) => {
+        response.data.forEach((item) => {
+          item.travelDate =
+            item.travelDate && item.travelDate.length === 2
+              ? item.travelDate.join(" ~ ")
+              : item.travelDate.join("");
+        });
+        this.footprintList = response.data;
+        this.listLoading = false;
+      });
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.container {
+  margin: 0 auto;
+  max-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+</style>

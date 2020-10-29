@@ -1,6 +1,6 @@
 # vue-nuxt
 
-> My great Nuxt.js "DEMO" project
+> Nuxt + Leaflet
 
 ## Build Setup
 

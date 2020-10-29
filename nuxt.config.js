@@ -1,8 +1,8 @@
 module.exports = {
   env: {
-    baseUrl: process.env.NODE_ENV === "production" ? "localhost" : "/",
+    baseUrl: process.env.NODE_ENV === "production" ? "localhost" : "/"
   },
-  mode: "universal", //普通模式，seo
+  mode: "universal", //普通模式，seo; - universal - spa
   /*
    ** Headers of the page
    */
@@ -15,10 +15,10 @@ module.exports = {
       {
         hid: "description",
         name: "description",
-        content: process.env.npm_package_description || "",
-      },
+        content: process.env.npm_package_description || ""
+      }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
   /*
    ** Customize the progress-bar color
@@ -30,12 +30,16 @@ module.exports = {
    */
   css: ["assets/css/common.css", "element-ui/lib/theme-chalk/index.css"],
   router: {
-    middleware: "router", //路由跳转都会执行router的中间件
+    middleware: "router" //路由跳转都会执行router的中间件
   },
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["@/plugins/axios", "@/plugins/elementui"],
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/elementui",
+    { src: "~/plugins/vue-leaflet", ssr: false }
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -51,6 +55,6 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
-  },
+    extend(config, ctx) {}
+  }
 };
