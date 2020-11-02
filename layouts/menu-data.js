@@ -13,6 +13,11 @@ const MenuData = [
     path: "demo",
     name: "demo",
     meta: { title: "Demo", icon: "s-promotion" }
+  },
+  {
+    path: "/?longitude=116.46&latitude=39.92",
+    name: "北京",
+    meta: { title: "北京", icon: "s-promotion" }
   }
 ];
 export default MenuData;

@@ -103,7 +103,7 @@ export default {
         // 定位到此marker
         const point = [query.latitude, query.longitude];
         this.$refs.map.mapObject.setView(point, 8);
-        // this.$refs.map.mapObject.panTo([query.latitude, query.longitude])
+        this.$refs.map.mapObject.panTo([query.latitude, query.longitude]);
       }
     }, 200);
   },
@@ -111,6 +111,15 @@ export default {
     getFootprints() {
       this.listLoading = true;
       // 查询所有足迹点
+      this.footprintList = [
+        {
+          latitude: 39.92,
+          longitude: 116.46,
+          place: "北京",
+          travelDate: "2020/01/10",
+          description: "北京旅游",
+        },
+      ];
       post("/footprint/pageList", { page: 1, size: 9999 }).then((response) => {
         response.data.forEach((item) => {
           item.travelDate =

@@ -36,7 +36,6 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 
 在页面级组件当中添加 head 方法，可以配置页面的 title 等标签
 
-## asyncData&fetch
+---
 
-- HTTP 请求
-- asyncData 返回的对象会和 data 合并
+[Reference](https://xiaozhuanlan.com/topic/3614597820)
