@@ -1,10 +1,10 @@
 <template>
-  <div id="map-wrap" style="height: 100vh">
-    Home :<span>{{ $store.state.username }}</span>
-    <!-- <client-only>
+  <div id="map-wrap">
+    <!-- Hello :<span>{{ $store.state.username }}</span> -->
+    <client-only>
       <l-map
         ref="map"
-        style="width: 100%"
+        style="width: 100%; height: 100%"
         :zoom="zoom"
         :center="center"
         :minZoom="minZoom"
@@ -34,17 +34,14 @@
           </l-marker>
         </template>
       </l-map>
-    </client-only> -->
+    </client-only>
   </div>
 </template>
 
 <script>
-// import L from "leaflet";
-// import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
 import { post } from "@/shared/request";
 export default {
   middleware: "page", //跳转到该页面时，执行page中间件
-  // components: { LMap, LTileLayer, LMarker, LPopup },
   head() {
     // 基于vue-meta，在页面级组件配置title等meta标签
     return {
@@ -61,22 +58,17 @@ export default {
       center: [35.63452, 109.132287],
       listLoading: false,
       footprintList: [],
-      // icon: L.icon({
-      //   iconUrl: "./images/foot.png",
-      //   iconSize: [28, 28],
-      //   iconAnchor: [10, 10],
-      // }),
+      icon: null,
     };
   },
   /**
    * asyncData:
-   * 在服务端执行  通过服务端获取数据
+   * **在服务端执行  通过服务端获取数据**
    * 在客户端执行 会把结果合并到data上
    * 只能在页面组件才能用；不能在layout、component中写
    * fetch方法，不会返回结果，操作vuex
    */
   async asyncData(context) {
-    //在服务端和客户端都执行
     // let res = await context.$axios.get("xxx");
     return {
       // name: res.name
@@ -84,6 +76,16 @@ export default {
     };
   },
   mounted() {
+    /**
+     * 写在data()当中，会提示L没有定义；
+     * 因为在服务端渲染时，vue-leaflet并没有引入
+     * 所以要将L.icon写到mounted当中
+     */
+    this.icon = L.icon({
+      iconUrl: "./images/foot.png",
+      iconSize: [28, 28],
+      iconAnchor: [10, 10],
+    });
     //进度条要等加载完成后才能执行
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
@@ -97,7 +99,6 @@ export default {
     const query = this.$route.query;
     // mounted 触发时，map还没渲染，所以延迟执行
     setTimeout(() => {
-      console.log(this.$refs.map);
       if (query.longitude && query.latitude) {
         // 定位到此marker
         const point = [query.latitude, query.longitude];
@@ -125,7 +126,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+#map-wrap {
+  height: calc(100vh - 60px);
+}
 .container {
   margin: 0 auto;
   max-height: 100vh;
@@ -135,3 +139,4 @@ export default {
   text-align: center;
 }
 </style>
+
